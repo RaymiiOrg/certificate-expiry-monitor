@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-$version = 1;
-$title = "Certificate Expiry Monitor (Beta)";
+$version = 1.1;
+$title = "Certificate Expiry Monitor";
 
 $current_folder = get_current_folder();
 

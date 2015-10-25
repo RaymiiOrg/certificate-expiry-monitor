@@ -20,7 +20,7 @@
 
 <p>This tool will help you remember when your certificates expire. Enter one or more websites below, we'll then monitor these sites and notify you a few times before they expire. <br>This way, you'll never forget to renew your certificates.<br></p>
 
-<p>Please note that this service is still in beta. It might have bugs. If so, please report them <a href="https://github.com/RaymiiOrg/certificate-expiry-monitor">here</a>.
+<p>This is open source software. If you encounter any issues, please report them <a href="https://github.com/RaymiiOrg/certificate-expiry-monitor">here</a>.
 
 <hr>
 
