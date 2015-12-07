@@ -21,12 +21,12 @@ First get the code and unpack it to your webroot:
     cd /var/www/html/
     git clone https://github.com/RaymiiOrg/certificate-expiry-monitor.git
 
-Create the database files, outside of your webroot. If you create these inside your webroot, everybody can read them.
+Create the database files, outside of your webroot. If you create these inside your webroot, everybody can read them:
 
-  touch /var/www/certificate-expiry-monitor-db/pre_checks.json
-  touch /var/www/certificate-expiry-monitor-db/checks.json
-  touch /var/www/certificate-expiry-monitor-db/deleted_checks.json
-  chown -R $wwwuser /var/www/certificate-expiry-monitor-db/*.json
+    touch /var/www/certificate-expiry-monitor-db/pre_checks.json
+    touch /var/www/certificate-expiry-monitor-db/checks.json
+    touch /var/www/certificate-expiry-monitor-db/deleted_checks.json
+    chown -R $wwwuser /var/www/certificate-expiry-monitor-db/*.json
 
 These files are used by the tool as database for checks.
 
