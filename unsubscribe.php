@@ -24,9 +24,16 @@ require('inc/header.php');
 
 if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
   $id = htmlspecialchars($_GET['id']);
+  $userip = $_SERVER['REMOTE_ADDR'];
+  if ( isset($_GET['cron']) && !empty($_GET['cron'])  ) {
+    $cron = htmlspecialchars($_GET['cron']);
+  } 
+  if ($cron = "auto") {
+    $userip = "Removed automatically because to many errors occured.";
+  }
   $uuid_pattern = "/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/";
   if (preg_match($uuid_pattern, $id)) {
-    $remove_domain = remove_domain_check($id, $_SERVER['REMOTE_ADDR']);
+    $remove_domain = remove_domain_check($id, $userip);
     if (is_array($remove_domain["errors"]) && count($remove_domain["errors"]) != 0) {
       $errors = array_unique($remove_domain["errors"]);
       foreach ($remove_domain["errors"] as $key => $err_value) {

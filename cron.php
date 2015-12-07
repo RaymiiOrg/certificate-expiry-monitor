@@ -43,6 +43,8 @@ if (php_sapi_name() == "cli") {
     exit;
   }
 
+  echo "===== start " . date('Y-m-d H:i:s') . "=====\n";
+
   foreach ($json_a as $key => $value) {
     $domain = $value['domain'];
     $email = $value['email'];
@@ -52,10 +54,15 @@ if (php_sapi_name() == "cli") {
     $val_domain = validate_domains($domain);
     if (count($val_domain['errors']) >= 1 ) {
       $errors = $val_domain['errors'];
+      $errortexts = '';
       foreach ($errors as $error_value) {
         echo "\t" . $error_value . ". \n";
+        $errortexts .= $error_value . "\n";
+        if (strpos($error_value,'Domain has expired certificate in chain') === false) {
+          send_error_mail($domain, $email, $errors);
+        }
       }
-      send_error_mail($domain, $email, $errors);
+      
       $json_a[$key]['errors'] += 1;
       $check_json = json_encode($json_a); 
       if(file_put_contents($check_file, $check_json, LOCK_EX)) {
@@ -68,7 +75,10 @@ if (php_sapi_name() == "cli") {
         echo "\tToo many errors. Adding domain to removal queue.\n";
         $removal_queue[] = $key;
       }
-      continue;
+
+      if (strpos($errortexts,'Domain has expired certificate in chain') === false) {
+        continue;
+      }
     }
     $raw_chain = get_raw_chain($domain);
     $counter = 0;
@@ -94,12 +104,14 @@ if (php_sapi_name() == "cli") {
       continue;
     }
     if ($json_a[$key]['errors'] != 0) {
-      $json_a[$key]['errors'] = 0;
-      $check_json = json_encode($json_a); 
-      if(file_put_contents($check_file, $check_json, LOCK_EX)) {
-        echo "\tError count reset to 0.\n";
-      } else {
-        echo "Can't write database.\n";
+      if (strpos($errortexts,'Domain has expired certificate in chain') === false) {
+        $json_a[$key]['errors'] = 0;
+        $check_json = json_encode($json_a); 
+        if(file_put_contents($check_file, $check_json, LOCK_EX)) {
+          echo "\tError count reset to 0.\n";
+        } else {
+          echo "Can't write database.\n";
+        }
       }
     }
 
@@ -107,12 +119,17 @@ if (php_sapi_name() == "cli") {
     
   } 
 
+  echo "===== end " . date('Y-m-d H:i:s') . "=====\n";
+
+
   if ( count($removal_queue) != 0 ) {
     echo "Processing removal queue.\n";
     foreach ($removal_queue as $remove_key => $remove_value) {
-      $unsub_url = "http://" . $current_domain . "/unsubscribe.php?id=" . $remove_value;
+      $unsub_url = "https://" . $current_domain . "/unsubscribe.php?cron=auto&id=" . $remove_value;
       $file = file_get_contents($unsub_url);
       if ($file === FALSE) {
+        $error = error_get_last();
+        echo "HTTP request failed. Error was: " . $error['message'];
         echo "\tRemoval Error.\n";
         continue;
       } else {
