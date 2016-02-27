@@ -59,7 +59,7 @@ function remove_domain_check($id,$visitor_ip) {
             "delete_date" => time(),
             );
 
-        $deleted_json = json_encode($deleted_json_a); 
+        $deleted_json = json_encode($deleted_json_a);
         if(file_put_contents($deleted_check_file, $deleted_json, LOCK_EX)) {
             $result['success'][] = true;
         } else {
@@ -68,7 +68,7 @@ function remove_domain_check($id,$visitor_ip) {
         }
 
         unset($json_a[$id]);
-        $check_json = json_encode($json_a); 
+        $check_json = json_encode($json_a);
         if(file_put_contents($check_file, $check_json, LOCK_EX)) {
             $result['success'][] = true;
         } else {
