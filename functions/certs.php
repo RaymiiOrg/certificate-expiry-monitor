@@ -33,7 +33,6 @@ function get_raw_chain($host,$port=443) {
   } else {
     $context = stream_context_get_params($read_stream);
     $context_meta = stream_context_get_options($read_stream)['ssl']['session_meta'];
-    $cert_data = openssl_x509_parse($context["options"]["ssl"]["peer_certificate"]);
     $chain_data = $context["options"]["ssl"]["peer_certificate_chain"];
     $chain_length = count($chain_data);
     if (isset($chain_data) && $chain_length < 10) {
