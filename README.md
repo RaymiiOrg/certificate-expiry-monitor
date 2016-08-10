@@ -46,9 +46,9 @@ Also change the `$current_domain` variable, it is used in all the emails.
 
 Set up the cronjob to run once a day:
 
-    # /etc/cron.d/certificate-exipry-monitor
+    # /etc/cron.d/certificate-expiry-monitor
     1 1 * * * $wwwuser /path/to/php /var/ww/html/certificate-expiry-monitor/cron.php >> /var/log/certificate-expiry-monitor.log 2>&1
 
 
-The default timeout for checks is 2 seconds. If this is to fast for your internal services, this can be raised in the `variables.php` file.
+The default timeout for checks is 2 seconds. If this is too fast for your internal services, this can be raised in the `variables.php` file.
 
