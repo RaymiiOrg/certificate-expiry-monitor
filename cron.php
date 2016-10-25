@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2015 Remy van Elst
+// Copyright (C) 2016 Remy van Elst
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -25,7 +25,7 @@ if (php_sapi_name() == "cli") {
   $tmp_check_file = $check_file . ".tmp";
   if (!copy($check_file, $tmp_check_file)) {
     echo "Failed to copy $check_file to $tmp_check_file.\n";
-    break;
+    die();
   }
 
   $file = file_get_contents($tmp_check_file);
@@ -40,7 +40,7 @@ if (php_sapi_name() == "cli") {
 
   if (count($json_a) == 0) {
     echo "Empty checklist.\n";
-    exit;
+    die();
   }
 
   echo "===== start " . date('Y-m-d H:i:s') . "=====\n";
@@ -56,11 +56,9 @@ if (php_sapi_name() == "cli") {
       $errors = $val_domain['errors'];
       $errortexts = '';
       foreach ($errors as $error_value) {
-        echo "\t" . $error_value . ". \n";
+        echo "\tERROR: " . $error_value . ". \n";
         $errortexts .= $error_value . "\n";
-        if (strpos($error_value,'Domain has expired certificate in chain') === false) {
-          send_error_mail($domain, $email, $errors);
-        }
+        send_error_mail($domain, $email, $errors);
       }
       
       $json_a[$key]['errors'] += 1;
@@ -76,7 +74,7 @@ if (php_sapi_name() == "cli") {
         $removal_queue[] = $key;
       }
 
-      if (strpos($errortexts,'Domain has expired certificate in chain') === false) {
+      if (strpos($errortexts,'Domain has expired certificate in chain') !== false) {
         continue;
       }
     }
@@ -104,13 +102,14 @@ if (php_sapi_name() == "cli") {
       continue;
     }
     if ($json_a[$key]['errors'] != 0) {
-      if (strpos($errortexts,'Domain has expired certificate in chain') === false) {
+      if (strpos($errortexts,'Domain has expired certificate in chain') !== false) {
         $json_a[$key]['errors'] = 0;
         $check_json = json_encode($json_a); 
         if(file_put_contents($check_file, $check_json, LOCK_EX)) {
           echo "\tError count reset to 0.\n";
         } else {
           echo "Can't write database.\n";
+          die();
         }
       }
     }
@@ -142,20 +141,23 @@ if (php_sapi_name() == "cli") {
   $tmp_pre_check_file = $pre_check_file . ".tmp";
   if (!copy($pre_check_file, $tmp_pre_check_file)) {
     echo "Failed to copy $pre_check_file to $tmp_pre_check_file.\n";
+    die();
   }
 
   $tmp_pre_file = file_get_contents($tmp_pre_check_file);
   if ($tmp_pre_file === FALSE) {
     echo "Can't open database.\n";
+    die();
   }
   $tmp_pre_json_a = json_decode($tmp_pre_file, true);
   if ($tmp_pre_json_a === null && json_last_error() !== JSON_ERROR_NONE) {
     echo "Can't read database.\n";
+    die();
   }
 
   if (count($tmp_pre_json_a) == 0) {
     echo "Empty pre-checklist.\n";
-    exit;
+    die();
   }
 
   foreach ($tmp_pre_json_a as $pre_key => $pre_value) {
