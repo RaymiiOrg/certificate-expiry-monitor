@@ -24,7 +24,7 @@ require('inc/header.php');
 
 if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
   $id = htmlspecialchars($_GET['id']);
-  $userip = $_SERVER['REMOTE_ADDR'];
+  $userip = $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
   if ( isset($_GET['cron']) && !empty($_GET['cron'])  ) {
     $cron = htmlspecialchars($_GET['cron']);
   } 
