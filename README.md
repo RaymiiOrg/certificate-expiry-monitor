@@ -23,10 +23,10 @@ First get the code and unpack it to your webroot:
 
 Create the database files, outside of your webroot. If you create these inside your webroot, everybody can read them.
 
-  touch /var/www/certificate-expiry-monitor-db/pre_checks.json
-  touch /var/www/certificate-expiry-monitor-db/checks.json
-  touch /var/www/certificate-expiry-monitor-db/deleted_checks.json
-  chown -R $wwwuser /var/www/certificate-expiry-monitor-db/*.json
+    touch /var/www/certificate-expiry-monitor-db/pre_checks.json
+    touch /var/www/certificate-expiry-monitor-db/checks.json
+    touch /var/www/certificate-expiry-monitor-db/deleted_checks.json
+    chown -R $wwwuser /var/www/certificate-expiry-monitor-db/*.json
 
 These files are used by the tool as database for checks.
 
@@ -36,9 +36,9 @@ Change the location of these files in `variables.php`:
 
     // set this to a location outside of your webroot so that it cannot be accessed via the internets.
 
-    $pre_check_file = '/var/ww/html/certificate-expiry-monitor/pre_checks.json';
-    $check_file = '/var/ww/html/certificate-expiry-monitor/checks.json';
-    $deleted_check_file = '/var/ww/html/certificate-expiry-monitor/deleted_checks.json';
+    $pre_check_file = '/var/www/html/certificate-expiry-monitor/pre_checks.json';
+    $check_file = '/var/www/html/certificate-expiry-monitor/checks.json';
+    $deleted_check_file = '/var/www/html/certificate-expiry-monitor/deleted_checks.json';
 
 Also change the `$current_domain` variable, it is used in all the email addresses.
 
@@ -51,8 +51,8 @@ And `$current_link`, which may or may not be the same. It is used in the confirm
 Set up the cronjob to run once a day:
 
     # /etc/cron.d/certificate-exipry-monitor
-    1 1 * * * $wwwuser /path/to/php /var/ww/html/certificate-expiry-monitor/cron.php >> /var/log/certificate-expiry-monitor.log 2>&1
+    1 1 * * * $wwwuser /path/to/php /var/www/html/certificate-expiry-monitor/cron.php >> /var/log/certificate-expiry-monitor.log 2>&1
 
 
-The default timeout for checks is 2 seconds. If this is to fast for your internal services, this can be raised in the `variables.php` file.
+The default timeout for checks is 2 seconds. If this is too fast for your internal services, this can be raised in the `variables.php` file.
 
