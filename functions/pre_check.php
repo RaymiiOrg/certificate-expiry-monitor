@@ -16,6 +16,7 @@
 
 function add_domain_to_pre_check($domain,$email,$visitor_ip) {
     global $current_domain;
+    global $current_link;
     global $pre_check_file;
     global $check_file;
     $result = array();
@@ -72,7 +73,7 @@ function add_domain_to_pre_check($domain,$email,$visitor_ip) {
         return $result;
     }
 
-    $sublink = "https://" . $current_domain . "/confirm.php?id=" . $uuid;
+    $sublink = "https://" . $current_link . "/confirm.php?id=" . $uuid;
 
     $to      = $email;
     $subject = "Confirm your Certificate Expiry Monitor subscription for " . htmlspecialchars($domain) . ".";
@@ -83,7 +84,7 @@ function add_domain_to_pre_check($domain,$email,$visitor_ip) {
         'Return-Path: noreply@' . $current_domain . "\r\n" .
         'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
         'X-Coffee: Black' . "\r\n" .
-        'List-Unsubscribe: <https://' . $current_domain . "/unsubscribe.php?id=" . $uuid . ">" . "\r\n" .
+        'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $uuid . ">" . "\r\n" .
         'X-Mailer: PHP/4.1.1';
 
     

@@ -16,6 +16,7 @@
 
 function add_domain_check($id,$visitor_ip) {
     global $current_domain;
+    global $current_link;
     global $pre_check_file;
     global $check_file;
     $result = array();
@@ -89,7 +90,7 @@ function add_domain_check($id,$visitor_ip) {
         return $result;
     }
 
-    $unsublink = "https://" . $current_domain . "/unsubscribe.php?id=" . $id;
+    $unsublink = "https://" . $current_link . "/unsubscribe.php?id=" . $id;
 
     $to      = $json_a[$id]['email'];
     $subject = "Certificate Expiry Monitor subscription confirmed for " . htmlspecialchars($json_a[$id]['domain']) . ".";
@@ -102,7 +103,7 @@ Email  : " . trim(htmlspecialchars($json_a[$id]['email'])) . "
 IP subscription confirmed from: " . htmlspecialchars($visitor_ip) . "
 Date subscribed confirmed: " . date("Y-m-d H:i:s T") . "
 
-We will monitor the certificates for this website. You will receive emails when it is about to expire as described in the FAQ on our website. You can view the FAQ here: https://" . $current_domain . ".
+We will monitor the certificates for this website. You will receive emails when it is about to expire as described in the FAQ on our website. You can view the FAQ here: https://" . $current_link . ".
 
 To unsubscribe from notifications for this domain please click or copy and paste the below link in your browser:
 
@@ -110,14 +111,14 @@ To unsubscribe from notifications for this domain please click or copy and paste
 
 Have a nice day,
 The Certificate Expiry Monitor Service.
-https://" . $current_domain . "";
+https://" . $current_link . "";
     $message = wordwrap($message, 70, "\r\n");
     $headers = 'From: noreply@' . $current_domain . "\r\n" .
         'Reply-To: noreply@' . $current_domain . "\r\n" .
         'Return-Path: noreply@' . $current_domain . "\r\n" .
         'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
         'X-Coffee: Black' . "\r\n" .
-        'List-Unsubscribe: <https://' . $current_domain . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
+        'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
         'X-Mailer: PHP/4.1.1';
 
     

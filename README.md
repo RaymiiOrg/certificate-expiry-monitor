@@ -40,9 +40,13 @@ Change the location of these files in `variables.php`:
     $check_file = '/var/ww/html/certificate-expiry-monitor/checks.json';
     $deleted_check_file = '/var/ww/html/certificate-expiry-monitor/deleted_checks.json';
 
-Also change the `$current_domain` variable, it is used in all the emails.
+Also change the `$current_domain` variable, it is used in all the email addresses.
 
     $current_domain = "certificatemonitor.org";
+
+And `$current_link`, which may or may not be the same. It is used in the confirm and unsubscribe links, and depends on your webserver configuration. `example.com/subdir` here means your unsubscribe links will start `https://example.com/subdir/unsubscribe.php`.
+
+    $current_link = "certificatemonitor.org";
 
 Set up the cronjob to run once a day:
 

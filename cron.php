@@ -124,7 +124,7 @@ if (php_sapi_name() == "cli") {
   if ( count($removal_queue) != 0 ) {
     echo "Processing removal queue.\n";
     foreach ($removal_queue as $remove_key => $remove_value) {
-      $unsub_url = "https://" . $current_domain . "/unsubscribe.php?cron=auto&id=" . $remove_value;
+      $unsub_url = "https://" . $current_link . "/unsubscribe.php?cron=auto&id=" . $remove_value;
       $file = file_get_contents($unsub_url);
       if ($file === FALSE) {
         $error = error_get_last();
