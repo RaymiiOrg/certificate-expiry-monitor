@@ -25,7 +25,8 @@ if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
   $id = htmlspecialchars($_GET['id']);
   $uuid_pattern = "/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/";
   if (preg_match($uuid_pattern, $id)) {
-    $add_domain = add_domain_check($id, $_SERVER['REMOTE_ADDR']);
+    $userip = $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
+    $add_domain = add_domain_check($id, $userip);
     if (is_array($add_domain["errors"]) && count($add_domain["errors"]) != 0) {
       $errors = array_unique($add_domain["errors"]);
       foreach ($add_domain["errors"] as $key => $err_value) {
