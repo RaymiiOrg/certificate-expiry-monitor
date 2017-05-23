@@ -189,5 +189,30 @@ function send_expires_in_email($days, $domain, $email, $raw_cert) {
   }
 }
 
+function slack_send_array($payload) {
+  global $slack_webhook;
+  if (!$payload) {
+    echo "\t\tNot sending empty Slack payload.\n";
+    return FALSE;
+  }
+  if (!$slack_webhook) {
+    echo "\t\tNo Slack webhook URL set.\n";
+    return FALSE;
+  }
+
+  $ch = curl_init($slack_webhook);
+  $postdata = array('payload' => json_encode($payload));
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+  $result = curl_exec($ch);
+  $http = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  curl_close($ch);
+
+  if ($result && $http == 200) {
+    echo "\n\t\tSlack message sent.\n";
+  } else {
+    echo "\n\t\tError sending Slack message.\n";
+  }
+  return $result;
+}
 
 ?>
