@@ -48,6 +48,10 @@ And `$current_link`, which may or may not be the same. It is used in the confirm
 
     $current_link = "certificatemonitor.org";
 
+If you use Slack, you can set up automatic posts whenever a subscription is added or removed, or checked and found to be expiring soon, expired or failed. To do this, create an [incoming webhook](https://api.slack.com/incoming-webhooks) and add its URL to the configuration (if you don't want this function, leave the string empty):
+
+    $slack_webhook = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX";
+
 Set up the cronjob to run once a day:
 
     # /etc/cron.d/certificate-exipry-monitor
