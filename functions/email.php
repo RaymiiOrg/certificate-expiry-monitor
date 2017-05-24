@@ -57,6 +57,19 @@ function send_error_mail($domain, $email, $errors) {
           'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
           'X-Mailer: PHP/4.1.1';  
 
+      slack_send_array(array('attachments' => array(array(
+        'fallback'   => $subject,
+        'color'      => '#ff0000',
+        'pretext'    => $subject,
+        'title'      => $domain,
+        'title_link' => 'https://' . $domain,
+        'text'       => 'Failed to check certificates for this domain:',
+        'fields'     => array(
+          array('title' => 'Errors',   'value' => $errors),
+          array('title' => 'Failures', 'value' => $failures)
+        )
+      ))));
+
       if (mail($to, $subject, $message, $headers) === true) {
           echo "\t\tEmail sent to $to.\n";
           return true;
@@ -116,6 +129,22 @@ function send_cert_expired_email($days, $domain, $email, $raw_cert) {
           'X-Coffee: Black' . "\r\n" .
           'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
           'X-Mailer: PHP/4.1.1';  
+
+      slack_send_array(array('attachments' => array(array(
+        'fallback'   => $subject,
+        'color'      => '#ff0000',
+        'pretext'    => $subject,
+        'title'      => $domain,
+        'title_link' => 'https://' . $domain,
+        'text'       => 'The following certificate in the chain for this domain has expired:',
+        'fields'     => array(
+          array('title' => 'Common Name', 'value' => $cert_cn),
+          array('title' => 'Subject',     'value' => $cert_subject),
+          array('title' => 'Serial',      'value' => $cert_serial),
+          array('title' => 'Valid From',  'value' => date("Y-m-d  H:i:s T", $cert_validfrom_date), 'short' => TRUE),
+          array('title' => 'Valid Until', 'value' => date("Y-m-d  H:i:s T", $cert_expiry_date),    'short' => TRUE)
+        )
+      ))));
 
       if (mail($to, $subject, $message, $headers) === true) {
           echo "\t\tEmail sent to $to.\n";
@@ -177,6 +206,22 @@ function send_expires_in_email($days, $domain, $email, $raw_cert) {
           'X-Coffee: Black' . "\r\n" .
           'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
           'X-Mailer: PHP/4.1.1';  
+
+      slack_send_array(array('attachments' => array(array(
+        'fallback'   => $subject,
+        'color'      => '#ffff00',
+        'pretext'    => $subject,
+        'title'      => $domain,
+        'title_link' => 'https://' . $domain,
+        'text'       => 'The following certificate in the chain for this domain is about to expire:',
+        'fields'     => array(
+          array('title' => 'Common Name', 'value' => $cert_cn),
+          array('title' => 'Subject',     'value' => $cert_subject),
+          array('title' => 'Serial',      'value' => $cert_serial),
+          array('title' => 'Valid From',  'value' => date("Y-m-d  H:i:s T", $cert_validfrom_date), 'short' => TRUE),
+          array('title' => 'Valid Until', 'value' => date("Y-m-d  H:i:s T", $cert_expiry_date),    'short' => TRUE)
+        )
+      ))));
 
       if (mail($to, $subject, $message, $headers) === true) {
           echo "\t\tEmail sent to $to.\n";
