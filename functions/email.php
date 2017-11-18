@@ -52,7 +52,7 @@ function send_error_mail($domain, $email, $errors) {
       $headers = 'From: noreply@' . $current_domain . "\r\n" .
           'Reply-To: noreply@' . $current_domain . "\r\n" .
           'Return-Path: noreply@' . $current_domain . "\r\n" .
-          'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
+//                'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
           'X-Coffee: Black' . "\r\n" .
           'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
           'X-Mailer: PHP/4.1.1';  
@@ -112,7 +112,7 @@ function send_cert_expired_email($days, $domain, $email, $raw_cert) {
       $headers = 'From: noreply@' . $current_domain . "\r\n" .
           'Reply-To: noreply@' . $current_domain . "\r\n" .
           'Return-Path: noreply@' . $current_domain . "\r\n" .
-          'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
+//                'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
           'X-Coffee: Black' . "\r\n" .
           'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
           'X-Mailer: PHP/4.1.1';  
@@ -173,7 +173,7 @@ function send_expires_in_email($days, $domain, $email, $raw_cert) {
       $headers = 'From: noreply@' . $current_domain . "\r\n" .
           'Reply-To: noreply@' . $current_domain . "\r\n" .
           'Return-Path: noreply@' . $current_domain . "\r\n" .
-          'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
+//                'X-Visitor-IP: ' . $visitor_ip . "\r\n" .
           'X-Coffee: Black' . "\r\n" .
           'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
           'X-Mailer: PHP/4.1.1';  

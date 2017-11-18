@@ -22,7 +22,7 @@ function remove_domain_check($id,$visitor_ip) {
     $result = array();
 
     $deleted_check_json_file = file_get_contents($deleted_check_file);
-    if ($file === FALSE) {
+    if ($deleted_check_json_file === FALSE) {
         $result['errors'][] = "Can't open database.";
         return $result;
     }
