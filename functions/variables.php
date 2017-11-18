@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 $version = 1.3;
-$title = "Certificate Expiry Monitor";
+$title = "Certificate Expiry Monitor KeyChest";
 
 $current_folder = get_current_folder();
 
@@ -28,13 +28,15 @@ ini_set('default_socket_timeout', 2);
 
 $random_blurp = rand(1000,99999);
 
-$current_domain = "certificatemonitor.org";
-$current_link = "certificatemonitor.org";
+$current_domain = "certificatemonitor.net";
+$current_link = "certificatemonitor.net";
+
+$reply_email = "support@enigmabridge.com";
 
 // set this to a location outside of your webroot so that it cannot be accessed via the internets.
 
-$pre_check_file = '/home/certmon/domains/certificatemonitor.org/cert-monitor/pre_checks.json';
-$check_file = '/home/certmon/domains/certificatemonitor.org/cert-monitor/checks.json';
-$deleted_check_file = '/home/certmon/domains/certificatemonitor.org/cert-monitor/deleted_checks.json';
+$pre_check_file = '/srv/certificatemonitor.net/public/htdocs/db/pre_checks.json';
+$check_file = '/srv/certificatemonitor.net/public/htdocs/db/checks.json';
+$deleted_check_file = '/srv/certificatemonitor.net/public/htdocs/db/deleted_checks.json';
 
 ?>
