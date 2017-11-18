@@ -16,40 +16,40 @@
 
 error_reporting(E_ALL & ~E_NOTICE);
 foreach (glob("functions/*.php") as $filename) {
-  require($filename);
+    require($filename);
 }
 
 require('inc/header.php');
 
-if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
-  $id = htmlspecialchars($_GET['id']);
-  $uuid_pattern = "/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/";
-  if (preg_match($uuid_pattern, $id)) {
-    $userip = $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
-    $add_domain = add_domain_check($id, $userip);
-    if (is_array($add_domain["errors"]) && count($add_domain["errors"]) != 0) {
-      $errors = array_unique($add_domain["errors"]);
-      foreach ($add_domain["errors"] as $key => $err_value) {
-        echo "<div class='alert alert-danger' role='alert'>";
-        echo htmlspecialchars($err_value);
-        echo "</div>";
-      }
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $id = htmlspecialchars($_GET['id']);
+    $uuid_pattern = "/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/";
+    if (preg_match($uuid_pattern, $id)) {
+        $userip = $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
+        $add_domain = add_domain_check($id, $userip);
+        if (is_array($add_domain["errors"]) && count($add_domain["errors"]) != 0) {
+            $errors = array_unique($add_domain["errors"]);
+            foreach ($add_domain["errors"] as $key => $err_value) {
+                echo "<div class='alert alert-danger' role='alert'>";
+                echo htmlspecialchars($err_value);
+                echo "</div>";
+            }
+        } else {
+            echo "<div class='alert alert-success' role='alert'>";
+            echo "Check added. You will now receive notifications on certificate expiration events as described in the FAQ.<br>";
+            echo "</div>";
+        }
     } else {
-      echo "<div class='alert alert-success' role='alert'>";
-      echo "Check added. You will now receive notifications on certificate expiration events as described in the FAQ.<br>";
-      echo "</div>";
+        echo "<div class='alert alert-danger' role='alert'>";;
+        echo "Error. ID is invalid.<br>";
+        echo "Please return and try again.<br>";
+        echo "</div>";
     }
-  } else {
-      echo "<div class='alert alert-danger' role='alert'>";;
-      echo "Error. ID is invalid.<br>";
-      echo "Please return and try again.<br>";
-      echo "</div>";
-  }
 } else {
-  echo "<div class='alert alert-danger' role='alert'>";;
-  echo "Error. ID is required.<br>";
-  echo "Please return and try again.<br>";
-  echo "</div>";
+    echo "<div class='alert alert-danger' role='alert'>";;
+    echo "Error. ID is required.<br>";
+    echo "Please return and try again.<br>";
+    echo "</div>";
 }
 
 require('inc/faq.php');

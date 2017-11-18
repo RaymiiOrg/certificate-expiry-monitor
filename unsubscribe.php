@@ -16,47 +16,47 @@
 
 error_reporting(E_ALL & ~E_NOTICE);
 foreach (glob("functions/*.php") as $filename) {
-  require($filename);
+    require($filename);
 }
 
 require('inc/header.php');
 
 
-if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
-  $id = htmlspecialchars($_GET['id']);
-  $userip = $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
-  if ( isset($_GET['cron']) && !empty($_GET['cron'])  ) {
-    $cron = htmlspecialchars($_GET['cron']);
-  } 
-  if ($cron = "auto") {
-    $userip = "Removed automatically because to many errors occured.";
-  }
-  $uuid_pattern = "/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/";
-  if (preg_match($uuid_pattern, $id)) {
-    $remove_domain = remove_domain_check($id, $userip);
-    if (is_array($remove_domain["errors"]) && count($remove_domain["errors"]) != 0) {
-      $errors = array_unique($remove_domain["errors"]);
-      foreach ($remove_domain["errors"] as $key => $err_value) {
-        echo "<div class='alert alert-danger' role='alert'>";
-        echo htmlspecialchars($err_value);
-        echo "</div>";
-      }
-    } else {
-      echo "<div class='alert alert-success' role='alert'>";
-      echo "Check removed. You will no longer receive notifications on certificate expiration events for this domain.<br>";
-      echo "</div>";
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $id = htmlspecialchars($_GET['id']);
+    $userip = $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
+    if (isset($_GET['cron']) && !empty($_GET['cron'])) {
+        $cron = htmlspecialchars($_GET['cron']);
     }
-  } else {
-      echo "<div class='alert alert-danger' role='alert'>";;
-      echo "Error. ID is invalid.<br>";
-      echo "Please return and try again.<br>";
-      echo "</div>";
-  }
+    if ($cron = "auto") {
+        $userip = "Removed automatically because to many errors occured.";
+    }
+    $uuid_pattern = "/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/";
+    if (preg_match($uuid_pattern, $id)) {
+        $remove_domain = remove_domain_check($id, $userip);
+        if (is_array($remove_domain["errors"]) && count($remove_domain["errors"]) != 0) {
+            $errors = array_unique($remove_domain["errors"]);
+            foreach ($remove_domain["errors"] as $key => $err_value) {
+                echo "<div class='alert alert-danger' role='alert'>";
+                echo htmlspecialchars($err_value);
+                echo "</div>";
+            }
+        } else {
+            echo "<div class='alert alert-success' role='alert'>";
+            echo "Check removed. You will no longer receive notifications on certificate expiration events for this domain.<br>";
+            echo "</div>";
+        }
+    } else {
+        echo "<div class='alert alert-danger' role='alert'>";;
+        echo "Error. ID is invalid.<br>";
+        echo "Please return and try again.<br>";
+        echo "</div>";
+    }
 } else {
-  echo "<div class='alert alert-danger' role='alert'>";;
-  echo "Error. ID is required.<br>";
-  echo "Please return and try again.<br>";
-  echo "</div>";
+    echo "<div class='alert alert-danger' role='alert'>";;
+    echo "Error. ID is required.<br>";
+    echo "Please return and try again.<br>";
+    echo "</div>";
 }
 
 echo "<div class='content'><section id='faq'>";

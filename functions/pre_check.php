@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-function add_domain_to_pre_check($domain,$email,$visitor_ip) {
+function add_domain_to_pre_check($domain, $email, $visitor_ip)
+{
     global $current_domain;
     global $current_link;
     global $pre_check_file;

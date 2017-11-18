@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-function pre_dump($var) {
-  echo "<pre>";
-  var_dump($var);
-  echo "</pre>";
+function pre_dump($var)
+{
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
 }
-
 
 
 ?>

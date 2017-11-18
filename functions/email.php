@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-function validate_email($email) {
+function validate_email($email)
+{
   if (!filter_var(mb_strtolower($email), FILTER_VALIDATE_EMAIL)) {
     return false;
   } else {
@@ -22,7 +23,8 @@ function validate_email($email) {
   }
 }
 
-function send_error_mail($domain, $email, $errors) {
+function send_error_mail($domain, $email, $errors)
+{
   echo "\t\tSending error mail to $email for $domain.\n";
   global $current_domain;
   global $current_link;
@@ -68,7 +70,8 @@ function send_error_mail($domain, $email, $errors) {
   }
 }
 
-function send_cert_expired_email($days, $domain, $email, $raw_cert) {
+function send_cert_expired_email($days, $domain, $email, $raw_cert)
+{
   global $current_domain;
   global $current_link;
   global $check_file;

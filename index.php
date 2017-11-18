@@ -20,7 +20,7 @@ ob_start();
 $write_cache = 0;
 
 foreach (glob("functions/*.php") as $filename) {
-  require($filename);
+    require($filename);
 }
 
 require('inc/header.php');
