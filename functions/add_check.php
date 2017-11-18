@@ -20,6 +20,7 @@ function add_domain_check($id, $visitor_ip)
     global $current_link;
     global $pre_check_file;
     global $check_file;
+    global $title;
     $result = array();
 
     $pre_check_json_file = file_get_contents($pre_check_file);
@@ -33,8 +34,8 @@ function add_domain_check($id, $visitor_ip)
         return $result;
     }
 
-    if (!is_array($pre_check_json_a[$id]) ) {
-      $result['errors'][] = "Can't find record in database for: " . htmlspecialchars($id);
+    if (!is_array($pre_check_json_a[$id])) {
+        $result['errors'][] = "Can't find record in database for: " . htmlspecialchars($id);
         return $result;
     }
 
@@ -50,21 +51,21 @@ function add_domain_check($id, $visitor_ip)
     }
 
     foreach ($json_a as $key => $value) {
-      if ($key == $id) {
-          $result['errors'][] = "Domain/email combo for  " . htmlspecialchars($pre_check_json_a[$id]['domain']) . " already exists.";
-          return $result;
-      }
-      if ($value["domain"] == $pre_check_json_a[$id]['domain'] && $value["email"] == $pre_check_json_a[$id]['email']) {
-          $result['errors'][] = "Domain / email combo for  " . htmlspecialchars($pre_check_json_a[$id]['domain']) . " already exists.";
-          return $result;
-      }
+        if ($key == $id) {
+            $result['errors'][] = "Domain/email combo for  " . htmlspecialchars($pre_check_json_a[$id]['domain']) . " already exists.";
+            return $result;
+        }
+        if ($value["domain"] == $pre_check_json_a[$id]['domain'] && $value["email"] == $pre_check_json_a[$id]['email']) {
+            $result['errors'][] = "Domain / email combo for  " . htmlspecialchars($pre_check_json_a[$id]['domain']) . " already exists.";
+            return $result;
+        }
     }
 
     $domains = validate_domains($pre_check_json_a[$id]['domain']);
-    if (count($domains['errors']) >= 1 ) {
-      $result['errors'][] = $domains['errors'];
-      return $result;
-    } 
+    if (count($domains['errors']) >= 1) {
+        $result['errors'][] = $domains['errors'];
+        return $result;
+    }
 
     $json_a[$id] = array("domain" => $pre_check_json_a[$id]['domain'],
         "email" => $pre_check_json_a[$id]['email'],
@@ -74,8 +75,8 @@ function add_domain_check($id, $visitor_ip)
         "visitor_confirm_ip" => $visitor_ip,
         "confirm_date" => time());
 
-    $json = json_encode($json_a); 
-    if(file_put_contents($check_file, $json, LOCK_EX)) {
+    $json = json_encode($json_a);
+    if (file_put_contents($check_file, $json, LOCK_EX)) {
         $result['success'][] = true;
     } else {
         $result['errors'][] = "Can't write database.";
@@ -83,8 +84,8 @@ function add_domain_check($id, $visitor_ip)
     }
 
     unset($pre_check_json_a[$id]);
-    $pre_check_json = json_encode($pre_check_json_a); 
-    if(file_put_contents($pre_check_file, $pre_check_json, LOCK_EX)) {
+    $pre_check_json = json_encode($pre_check_json_a);
+    if (file_put_contents($pre_check_file, $pre_check_json, LOCK_EX)) {
         $result['success'][] = true;
     } else {
         $result['errors'][] = "Can't write database.";
@@ -93,11 +94,11 @@ function add_domain_check($id, $visitor_ip)
 
     $unsublink = "https://" . $current_link . "/unsubscribe.php?id=" . $id;
 
-    $to      = $json_a[$id]['email'];
-    $subject = "Certificate Expiry Monitor subscription confirmed for " . htmlspecialchars($json_a[$id]['domain']) . ".";
+    $to = $json_a[$id]['email'];
+    $subject = $title . " subscription confirmed for " . htmlspecialchars($json_a[$id]['domain']) . ".";
     $message = "Hello,
 
-Someone, hopefully you, has confirmed the subscription of their website to the Certificate Expiry Monitor. This is a service which monitors an SSL certificate on a website, and notifies you when it is about to expire. This extra notification helps you remember to renew your certificate on time.
+Someone, hopefully you, has confirmed the subscription of their website to the " . $title .". This is a service which monitors an SSL certificate on a website, and notifies you when it is about to expire. This extra notification helps you remember to renew your certificate on time.
   
 Domain : " . trim(htmlspecialchars($json_a[$id]['domain'])) . "
 Email  : " . trim(htmlspecialchars($json_a[$id]['email'])) . "
@@ -111,7 +112,7 @@ To unsubscribe from notifications for this domain please click or copy and paste
   " . $unsublink . "
 
 Have a nice day,
-The Certificate Expiry Monitor Service.
+The " . $title . " Service.
 https://" . $current_link . "";
     $message = wordwrap($message, 70, "\r\n");
     $headers = 'From: noreply@' . $current_domain . "\r\n" .
@@ -122,7 +123,6 @@ https://" . $current_link . "";
         'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
         'X-Mailer: PHP/4.1.1';
 
-    
 
     if (mail($to, $subject, $message, $headers) === true) {
         $result['success'][] = true;
