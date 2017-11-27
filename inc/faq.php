@@ -18,6 +18,12 @@
 
 <hr>
 
+<?php 
+  if ($showListOfDomains) {
+  echo '<a href="/list.php">View list of domains</a>';
+  }
+?>
+
 <h1>FAQ</h1>
 
 <h2>Is this service free?</h2>
