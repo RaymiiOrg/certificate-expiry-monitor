@@ -59,10 +59,6 @@ if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
   echo "</div>";
 }
 
-echo "<div class='content'><section id='faq'>";
-require('inc/faq.php');
-echo "</div>";
-
 require('inc/footer.php');
 
 ?>
