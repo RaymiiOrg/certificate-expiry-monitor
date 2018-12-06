@@ -28,8 +28,8 @@ if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
   if ( isset($_GET['cron']) && !empty($_GET['cron'])  ) {
     $cron = htmlspecialchars($_GET['cron']);
   } 
-  if ($cron = "auto") {
-    $userip = "Removed automatically because to many errors occured.";
+  if ($cron == "auto") {
+    $userip = "Removed automatically because too many errors occured.";
   }
   $uuid_pattern = "/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/";
   if (preg_match($uuid_pattern, $id)) {
