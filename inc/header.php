@@ -34,8 +34,8 @@ echo "<div id='page-content-wrapper'>";
 echo "<div class='container-fluid'>";
 echo "<div class='row'>";
 
-echo "<div class='col-md-10 col-md-offset-1'><div class='page-header'><h1>";
+echo "<div class='col-md-10 col-md-offset-1'><a href='/' class='page-header'><h1>";
 echo htmlspecialchars($title);
-echo "</h1></div>";
+echo "</h1></a>";
 
 ?>
