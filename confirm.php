@@ -52,8 +52,6 @@ if ( isset($_GET['id']) && !empty($_GET['id'])  ) {
   echo "</div>";
 }
 
-require('inc/faq.php');
-
 require('inc/footer.php');
 
 ?>
