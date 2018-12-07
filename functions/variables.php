@@ -31,6 +31,8 @@ $random_blurp = rand(1000,99999);
 $current_domain = "certificatemonitor.org";
 $current_link = "certificatemonitor.org";
 
+$slack_webhook = "";
+
 $showListOfDomains = false;
 $showEmailsOnListOfDomains = false;
 $showClickToUnsubscribeOnListOfDomains = false;
