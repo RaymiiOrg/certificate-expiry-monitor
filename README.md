@@ -48,6 +48,14 @@ Also change the `$current_domain` variable, it is used in all the email addresse
 And `$current_link`, which may or may not be the same. It is used in the confirm and unsubscribe links, and depends on your webserver configuration. `example.com/subdir` here means your unsubscribe links will start `https://example.com/subdir/unsubscribe.php`.
 
     $current_link = "certificatemonitor.org";
+    
+If you use Slack/Rocketchat, you can set up automatic posts whenever a subscription is added or removed, or checked and found to be expiring soon, expired or failed. To do this, create an [incoming webhook](https://api.slack.com/incoming-webhooks) and add its URL to the configuration (if you don't want this function, leave the string empty):
+
+     $slack_webhook = "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX";
+     
+ or
+     
+     $slack_webhook = "https://my.rocketchat.com/XXXXXXXXXXXXXXXXXXXXXXXX";
 
 Set up the cronjob to run once a day:
 
