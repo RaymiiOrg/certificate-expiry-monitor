@@ -8,9 +8,10 @@ See the example site: https://certificatemonitor.org/
 
 ## Requirements
 
-- PHP 5.6+
+- PHP 5.6+ (7.0 recommended)
 - OpenSSL
 - PHP must allow remote fopen.
+- PHP mbstring 
 
 ## Installation
 
