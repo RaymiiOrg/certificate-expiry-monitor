@@ -52,7 +52,8 @@ if ( isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['domains'
     echo "Email: " . htmlspecialchars($email) . ".<br>";
     echo "</div>";
     foreach ($domains['domains'] as $key => $value) {
-      $add_domain = add_domain_to_pre_check($value, $email, $_SERVER['REMOTE_ADDR']);
+      $userip = $_SERVER["HTTP_X_FORWARDED_FOR"] ? $_SERVER["HTTP_X_FORWARDED_FOR"] : $_SERVER["REMOTE_ADDR"];
+      $add_domain = add_domain_to_pre_check($value, $email, $userip);
       if (is_array($add_domain["errors"]) && count($add_domain["errors"]) != 0) {
         $errors = array_unique($add_domain["errors"]);
         foreach ($add_domain["errors"] as $key => $err_value) {

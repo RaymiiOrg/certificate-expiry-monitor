@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2015 Remy van Elst
+// Copyright (C) 2016 Remy van Elst
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-$version = 1.2;
+$version = 1.3;
 $title = "Certificate Expiry Monitor";
 
 $current_folder = get_current_folder();
@@ -29,6 +29,7 @@ ini_set('default_socket_timeout', 2);
 $random_blurp = rand(1000,99999);
 
 $current_domain = "certificatemonitor.org";
+$current_link = "certificatemonitor.org";
 
 // set this to a location outside of your webroot so that it cannot be accessed via the internets.
 

@@ -25,14 +25,13 @@ function get_raw_chain($host,$port=443) {
     "peer_name" => $host,
     "verify_peer_name" => false,
     "allow_self_signed" => true,
-    "capture_session_meta" => true,
     "sni_enabled" => true)));
   $read_stream = stream_socket_client("ssl://$host:$port", $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $stream);
   if ( $read_stream === false ) {
     return false;
   } else {
     $context = stream_context_get_params($read_stream);
-    $context_meta = stream_context_get_options($read_stream)['ssl']['session_meta'];
+    $context_meta = stream_get_meta_data($read_stream)["crypto"];
     $cert_data = openssl_x509_parse($context["options"]["ssl"]["peer_certificate"]);
     $chain_data = $context["options"]["ssl"]["peer_certificate_chain"];
     $chain_length = count($chain_data);
