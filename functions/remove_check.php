@@ -91,22 +91,7 @@ function remove_domain_check($id,$visitor_ip) {
             'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
             'X-Mailer: PHP/4.1.1';
 
-                slack_send_array(array('attachments' => array(array(
-          'fallback'   => $subject,
-          'color'      => '#ffff00',
-          'pretext'    => $subject,
-          'title'      => $deleted_json_a[$id]['domain'],
-          'title_link' => 'https://' . $deleted_json_a[$id]['domain'],
-          'text'       => 'Subscription removed for this domain:',
-          'fields'     => array(
-            array('title' => 'Domain',       'value' => $deleted_json_a[$id]['domain']),
-            array('title' => 'Email',        'value' => $deleted_json_a[$id]['email']),
-            array('title' => 'Removed from', 'value' => $visitor_ip,           'short' => TRUE),
-            array('title' => 'Removed date', 'value' => date("Y-m-d H:i:s T"), 'short' => TRUE),
-          )
-        ))));
-
-          if (mail($to, $subject, $message, $headers) === true) {
+        if (mail($to, $subject, $message, $headers) === true) {
             $result['success'][] = true;
         } else {
             $result['errors'][] = "Can't send email.";
