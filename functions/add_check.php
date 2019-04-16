@@ -121,20 +121,7 @@ https://" . $current_link . "";
         'List-Unsubscribe: <https://' . $current_link . "/unsubscribe.php?id=" . $id . ">" . "\r\n" .
         'X-Mailer: PHP/4.1.1';
 
-    slack_send_array(array('attachments' => array(array(
-      'fallback'   => $subject,
-      'color'      => '#00ff00',
-      'pretext'    => $subject,
-      'title'      => $json_a[$id]['domain'],
-      'title_link' => 'https://' . $json_a[$id]['domain'],
-      'text'       => 'Subscription confirmed for this domain:',
-      'fields'     => array(
-        array('title' => 'Domain',         'value' => $json_a[$id]['domain']),
-        array('title' => 'Email',          'value' => $json_a[$id]['email']),
-        array('title' => 'Confirmed from', 'value' => $visitor_ip,           'short' => TRUE),
-        array('title' => 'Confirmed date', 'value' => date("Y-m-d H:i:s T"), 'short' => TRUE),
-      )
-    ))));    
+    
 
     if (mail($to, $subject, $message, $headers) === true) {
         $result['success'][] = true;
