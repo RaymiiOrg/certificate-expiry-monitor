@@ -50,7 +50,7 @@ And `$current_link`, which may or may not be the same. It is used in the confirm
 
 Set up the cronjob to run once a day:
 
-    # /etc/cron.d/certificate-exipry-monitor
+    # /etc/cron.d/certificate-expiry-monitor
     1 1 * * * $wwwuser /path/to/php /var/www/html/certificate-expiry-monitor/cron.php >> /var/log/certificate-expiry-monitor.log 2>&1
 
 
