@@ -22,7 +22,7 @@ function validate_domains($domains) {
   $domains = array_unique($domains);
 
   foreach ($domains as $key => $value) {
-    $value = trim(mb_strtolower($value));
+    $value = trim(strtolower($value));
     // check if reasonably valid domain
     if ( !preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $value) && !preg_match("/^.{1,253}$/", $value) && !preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $value) ) {
       $errors[] = "Invalid domain name: " . htmlspecialchars($value) . ".";

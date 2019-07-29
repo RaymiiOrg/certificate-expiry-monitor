@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 function validate_email($email) {
-  if (!filter_var(mb_strtolower($email), FILTER_VALIDATE_EMAIL)) {
+  if (!filter_var(strtolower($email), FILTER_VALIDATE_EMAIL)) {
     return false;
   } else {
     return true;
