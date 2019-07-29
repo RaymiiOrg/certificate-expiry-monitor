@@ -57,7 +57,7 @@
 <p>Yes. All certificates in the chain are checked, a maximum of 10. You will receive notification if any of the chain certificates expire as well.</p><br>
 
 <h2>Do you provide any guarantees on uptime?</h2>
-<p>We provide this service on a best effort base. The project is fully open source, you can set up your own instance if you demand 100% uptime.</p><br>
+<p>We provide this service on a best effort basis. The project is fully open source, you can set up your own instance if you demand 100% uptime.</p><br>
 
 <h2>What license is the project under?</h2>
 <p>GNU Affero GPL v3 or later.</p><br>
