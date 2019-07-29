@@ -29,7 +29,11 @@ function validate_domains($domains) {
     }
 
     // check valid dns record
-    $ips = dns_get_record($value, DNS_A + DNS_AAAA);
+    $ips = @dns_get_record($value, DNS_A + DNS_AAAA);
+    if(!$ips) {
+        $errors[] = "Error resolving domain: " . htmlspecialchars($value);
+       continue;
+    }
     sort($ips);
     if ( count($ips) >= 1 ) {
       if (!empty($ips[0]['type']) ) {
@@ -55,8 +59,10 @@ function validate_domains($domains) {
   if (is_array($errors) && count($errors) == 0) {
     foreach ($domains as $key => $value) {
       $raw_chain = get_raw_chain(trim($value));
-      if (!$raw_chain) {
-        $errors[] = "Domain has invalid or no certificate: " . htmlspecialchars($value) . ".";
+      if ($raw_chain['error']) {
+        foreach ($raw_chain['error'] as $error_key => $error_value) {
+          $errors[] = "\n - " . htmlspecialchars($error_value);
+        }
       } else {
         foreach ($raw_chain['chain'] as $raw_key => $raw_value) {
           $cert_expiry = cert_expiry($raw_value);

@@ -26,9 +26,10 @@ function get_raw_chain($host,$port=443) {
     "verify_peer_name" => false,
     "allow_self_signed" => true,
     "sni_enabled" => true)));
-  $read_stream = stream_socket_client("ssl://$host:$port", $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $stream);
+  $read_stream = @stream_socket_client("ssl://$host:$port", $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $stream);
   if ( $read_stream === false ) {
-    return false;
+    $data["error"] = [$errstr];
+    return $data;
   } else {
     $context = stream_context_get_params($read_stream);
     $context_meta = stream_get_meta_data($read_stream)["crypto"];
