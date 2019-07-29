@@ -19,10 +19,12 @@ function add_domain_check($id,$visitor_ip) {
     global $current_link;
     global $pre_check_file;
     global $check_file;
+    global $title;
+
     $result = array();
 
     $pre_check_json_file = file_get_contents($pre_check_file);
-    if ($file === FALSE) {
+    if ($pre_check_json_file === FALSE) {
         $result['errors'][] = "Can't open database.";
         return $result;
     }
@@ -93,10 +95,10 @@ function add_domain_check($id,$visitor_ip) {
     $unsublink = "https://" . $current_link . "/unsubscribe.php?id=" . $id;
 
     $to      = $json_a[$id]['email'];
-    $subject = "Certificate Expiry Monitor subscription confirmed for " . htmlspecialchars($json_a[$id]['domain']) . ".";
+    $subject = $title . " subscription confirmed for " . htmlspecialchars($json_a[$id]['domain']) . ".";
     $message = "Hello,
 
-Someone, hopefully you, has confirmed the subscription of their website to the Certificate Expiry Monitor. This is a service which monitors an SSL certificate on a website, and notifies you when it is about to expire. This extra notification helps you remember to renew your certificate on time.
+Someone, hopefully you, has confirmed the subscription of their website to the " . $title . ". This is a service which monitors an SSL certificate on a website, and notifies you when it is about to expire. This extra notification helps you remember to renew your certificate on time.
   
 Domain : " . trim(htmlspecialchars($json_a[$id]['domain'])) . "
 Email  : " . trim(htmlspecialchars($json_a[$id]['email'])) . "
@@ -110,7 +112,7 @@ To unsubscribe from notifications for this domain please click or copy and paste
   " . $unsublink . "
 
 Have a nice day,
-The Certificate Expiry Monitor Service.
+The " . $title . " service
 https://" . $current_link . "";
     $message = wordwrap($message, 70, "\r\n");
     $headers = 'From: noreply@' . $current_domain . "\r\n" .
