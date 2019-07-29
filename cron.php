@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2016 Remy van Elst
+// Copyright (C) 2019 Remy van Elst
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -57,7 +57,7 @@ if (php_sapi_name() == "cli") {
         echo "\n" . $error_value . "  Domain: " . $domain . "\n";
         $errortexts .= $error_value . "\n";
         send_error_mail($domain, $email, $errors);
-	continue;
+        continue;
       }
       
       $json_a[$key]['errors'] += 1;
@@ -71,7 +71,7 @@ if (php_sapi_name() == "cli") {
       if ($json_a[$key]['errors'] >= 7) {
         echo "\nToo many errors. Adding " . $domain . " to removal queue.\n";
         $removal_queue[] = $key;
-	continue;
+        continue;
       }
 
       #if (strpos($errortexts,'\nDomain has expired certificate in chain') !== false) {
@@ -120,62 +120,61 @@ if (php_sapi_name() == "cli") {
     
   } 
   echo "\n===== end " . date('Y-m-d H:i:s') . "=====\n";
-exit;
 
 
-#  if ( count($removal_queue) != 0 ) {
-#    echo "Processing removal queue.\n";
-#    foreach ($removal_queue as $remove_key => $remove_value) {
-#      $unsub_url = "https://" . $current_domain . "/unsubscribe.php?cron=auto&id=" . $remove_value;
-#      $file = file_get_contents($unsub_url);
-#      if ($file === FALSE) {
-#        $error = error_get_last();
-#        echo "HTTP request failed. Error was: " . $error['message'];
-#        echo "\tRemoval Error.\n";
-#        continue;
-#      } else {
-#        echo "\tRemoved $remove_value.\n";
-#      }
-#    }
-#  }
-#
+  if ( count($removal_queue) != 0 ) {
+   echo "Processing removal queue.\n";
+   foreach ($removal_queue as $remove_key => $remove_value) {
+     $unsub_url = "https://" . $current_domain . "/unsubscribe.php?cron=auto&id=" . $remove_value;
+     $file = file_get_contents($unsub_url);
+     if ($file === FALSE) {
+       $error = error_get_last();
+       echo "HTTP request failed. Error was: " . $error['message'];
+       echo "\tRemoval Error.\n";
+       continue;
+     } else {
+       echo "\tRemoved $remove_value.\n";
+     }
+   }
+ }
+
     // remove non-confirmed subs older than 7 days
-  $tmp_pre_check_file = $pre_check_file . ".tmp";
-  if (!copy($pre_check_file, $tmp_pre_check_file)) {
-    echo "Failed to copy $pre_check_file to $tmp_pre_check_file.\n";
-    die();
-  }
+ $tmp_pre_check_file = $pre_check_file . ".tmp";
+ if (!copy($pre_check_file, $tmp_pre_check_file)) {
+  echo "Failed to copy $pre_check_file to $tmp_pre_check_file.\n";
+  die();
+}
 
-  $tmp_pre_file = file_get_contents($tmp_pre_check_file);
-  if ($tmp_pre_file === FALSE) {
-    echo "Can't open database.\n";
-    die();
-  }
-  $tmp_pre_json_a = json_decode($tmp_pre_file, true);
-  if ($tmp_pre_json_a === null && json_last_error() !== JSON_ERROR_NONE) {
-    echo "Can't read database.\n";
-    die();
-  }
+$tmp_pre_file = file_get_contents($tmp_pre_check_file);
+if ($tmp_pre_file === FALSE) {
+  echo "Can't open database.\n";
+  die();
+}
+$tmp_pre_json_a = json_decode($tmp_pre_file, true);
+if ($tmp_pre_json_a === null && json_last_error() !== JSON_ERROR_NONE) {
+  echo "Can't read database.\n";
+  die();
+}
 
-  if (count($tmp_pre_json_a) == 0) {
-    echo "Empty pre-checklist.\n";
-    die();
-  }
+if (count($tmp_pre_json_a) == 0) {
+  echo "Empty pre-checklist.\n";
+  die();
+}
 
-  foreach ($tmp_pre_json_a as $pre_key => $pre_value) {
-    $today = strtotime(date("Y-m-d"));
-    $pre_add_date = strtotime(date("Y-m-d",$pre_value['pre_add_date']));
-    $pre_add_diff = $today - $pre_add_date;
-    if ($pre_add_diff > "604800") {
-      unset($tmp_pre_json_a[$pre_key]);
-      $tmp_pre_json = json_encode($tmp_pre_json_a); 
-      if(file_put_contents($pre_check_file, $tmp_pre_json, LOCK_EX)) {
-        echo "Subscription for " . $pre_value['domain'] . " from " . $pre_value['email'] . " older than 7 days. Removing from subscription list.\n";
-      } else {
-        echo "Failed to remove subscription for " . $pre_value['domain'] . " from " . $pre_value['email'] . " older than 7 days from subscription list.\n";
-      }
+foreach ($tmp_pre_json_a as $pre_key => $pre_value) {
+  $today = strtotime(date("Y-m-d"));
+  $pre_add_date = strtotime(date("Y-m-d",$pre_value['pre_add_date']));
+  $pre_add_diff = $today - $pre_add_date;
+  if ($pre_add_diff > "604800") {
+    unset($tmp_pre_json_a[$pre_key]);
+    $tmp_pre_json = json_encode($tmp_pre_json_a); 
+    if(file_put_contents($pre_check_file, $tmp_pre_json, LOCK_EX)) {
+      echo "Subscription for " . $pre_value['domain'] . " from " . $pre_value['email'] . " older than 7 days. Removing from subscription list.\n";
+    } else {
+      echo "Failed to remove subscription for " . $pre_value['domain'] . " from " . $pre_value['email'] . " older than 7 days from subscription list.\n";
     }
   }
+}
 
 } else {
   header('HTTP/1.0 301 Moved Permanently');  

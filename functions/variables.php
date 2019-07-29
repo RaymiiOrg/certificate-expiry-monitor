@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2016 Remy van Elst
+// Copyright (C) 2019 Remy van Elst
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-$version = 1.3;
+$version = 1.4;
 $title = "Certificate Expiry Monitor";
 
 $current_folder = get_current_folder();

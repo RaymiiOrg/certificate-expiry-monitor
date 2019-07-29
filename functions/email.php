@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2015 Remy van Elst
+// Copyright (C) 2019 Remy van Elst
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
@@ -31,12 +31,12 @@ function send_error_mail($domain, $email, $errors) {
   $errors = implode("\r\n", $errors);
   $json_file = file_get_contents($check_file);
   if ($check_file === FALSE) {
-      echo "\t\tCan't open database.\n";
+      echo "\nCan't open database.\n";
       return false;
   }
   $json_a = json_decode($json_file, true);
   if ($json_a === NULL || json_last_error() !== JSON_ERROR_NONE) {
-      echo "\t\tCan't read database.\n";
+      echo "\nCan't read database.\n";
       return false;
   }
 
@@ -58,10 +58,10 @@ function send_error_mail($domain, $email, $errors) {
           'X-Mailer: PHP/4.1.1';  
 
       if (mail($to, $subject, $message, $headers) === true) {
-          echo "\t\tEmail sent to $to.\n";
+          echo "\nError mail sent to $to.\n";
           return true;
       } else {
-          echo "\t\tCan't send email.\n";
+          echo "\nCan't send error email.\n";
           return false;
       }
     } 
@@ -73,16 +73,16 @@ function send_cert_expired_email($days, $domain, $email, $raw_cert) {
   global $current_link;
   global $check_file;
   $domain = trim($domain);
-  echo "\t\tDomain " . $domain . " expired " . $days . " ago.\n";
+  echo "\nDomain " . $domain . " expired " . $days . " ago.\n";
 
   $file = file_get_contents($check_file);
   if ($file === FALSE) {
-      echo "\t\tCan't open database.\n";
+      echo "\nCan't open database.\n";
       return false;
   }
   $json_a = json_decode($file, true);
   if ($json_a === null && json_last_error() !== JSON_ERROR_NONE) {
-      echo "\t\tCan't read database.\n";
+      echo "\nCan't read database.\n";
       return false;
   }
 
@@ -118,10 +118,10 @@ function send_cert_expired_email($days, $domain, $email, $raw_cert) {
           'X-Mailer: PHP/4.1.1';  
 
       if (mail($to, $subject, $message, $headers) === true) {
-          echo "\t\tEmail sent to $to.\n";
+          echo "\nExpired x days ago mail sent to $to.\n";
           return true;
       } else {
-          echo "\t\tCan't send email.\n";
+          echo "\nCan't send expired x days ago email.\n";
           return false;
       }
     } 
@@ -134,16 +134,16 @@ function send_expires_in_email($days, $domain, $email, $raw_cert) {
   global $current_link;
   global $check_file;
   $domain = trim($domain);
-  echo "\t\tDomain " . $domain . " expires in " . $days . " days.\n";
+  echo "\nDomain " . $domain . " expires in " . $days . " days.\n";
 
   $file = file_get_contents($check_file);
   if ($file === FALSE) {
-      echo "\t\tCan't open database.\n";
+      echo "\nCan't open database.\n";
       return false;
   }
   $json_a = json_decode($file, true);
   if ($json_a === null && json_last_error() !== JSON_ERROR_NONE) {
-      echo "\t\tCan't read database.\n";
+      echo "\nCan't read database.\n";
       return false;
   }
 
@@ -179,10 +179,10 @@ function send_expires_in_email($days, $domain, $email, $raw_cert) {
           'X-Mailer: PHP/4.1.1';  
 
       if (mail($to, $subject, $message, $headers) === true) {
-          echo "\t\tEmail sent to $to.\n";
+          echo "\nExpires in mail sent to $to.\n";
           return true;
       } else {
-          echo "\t\tCan't send email.\n";
+          echo "\nCan't send expires in email.\n";
           return false;
       }
     } 
