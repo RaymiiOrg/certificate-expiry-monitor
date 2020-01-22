@@ -1,5 +1,7 @@
 # Certificate Expiry Monitor
 
+Notice: https://raymii.org/s/blog/Cancellation_notice_for_cipherlist_ssldecoder_and_certificatemonitor.html
+
 ## About
 
 Certificate Expiry Monitor is an open source monitoring tool for certificates. It monitors websites and emails you when the certificates are about to expire.
