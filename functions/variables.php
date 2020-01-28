@@ -31,6 +31,8 @@ $random_blurp = rand(1000,99999);
 $current_domain = "certificatemonitor.org";
 $current_link = $current_domain;
 
+$slack_webhook = "";
+
 // set this to a location outside of your webroot so that it cannot be accessed via the internets.
 
 
